@@ -1,0 +1,18 @@
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+    "email": "nametest@gmail.com", 
+    "password": "test"
+}
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "nametest@gmail.com", 
+    "password": "test"
+}
+###
+GET http://localhost:3000/api/sauces
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDQ3YTY0MjYxMDE4NzI3NTQ1NzkyNGUiLCJpYXQiOjE2MTUzMDg0MjYsImV4cCI6MTYxNTM5NDgyNn0.nGw97OAtLrPfz0AVs3msFYUDDAIOlqHPR-UCKhd4sBU

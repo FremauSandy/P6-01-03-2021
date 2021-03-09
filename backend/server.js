@@ -1,6 +1,8 @@
+/*IMPORT*/
 const http = require("http");
-const app = require("./app"); // import app.js
+const app = require("./app");
 
+/*CONFIRMATION PORT VALIDE*/
 const normalizePort = val => {
 	// fonction gestion port valide
 	const port = parseInt(val, 10);
@@ -17,6 +19,7 @@ const normalizePort = val => {
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port); // l'app express est definie sur ce port
 
+/*RECHERCHE ERREURS*/
 const errorHandler = error => {
 	// function gestion d'erreurs
 	if (error.syscall !== "listen") {
@@ -38,6 +41,7 @@ const errorHandler = error => {
 	}
 };
 
+/*SERVEUR*/
 const server = http.createServer(app); // création du serveur
 
 server.on("error", errorHandler);
@@ -47,4 +51,4 @@ server.on("listening", () => {
 	console.log("Listening on " + bind);
 });
 
-server.listen(port);
+server.listen(port); // ecoute du serveur
