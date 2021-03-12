@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt"); //import cryptage pour les mots de passe
 const jwt = require("jsonwebtoken"); //package pour créer et verifier les tokens
 const User = require("../models/user");
+const bouncer = require("express-bouncer")(120000, 1.8e6, 5);
 
 /*ENREGISTRER*/
 exports.signup = (req, res, next) => {
@@ -47,9 +48,10 @@ exports.login = (req, res, next) => {
 							//token d'authentification
 							{ userId: user._id },
 							"RANDOM_TOKEN_SECRET",
-							{ expiresIn: "24h" }
+							{ expiresIn: "2h" }
 						)
 					});
+					bouncer.reset(req);
 				})
 				.catch(error => res.status(500).json({ error }));
 		})

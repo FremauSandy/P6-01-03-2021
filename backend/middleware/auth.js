@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 		const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET"); // decoder le token
 		const userId = decodedToken.userId; // extraction du decodage du token
 		if (req.body.userId && req.body.userId !== userId) {
-			// pas correspondance
+			// pas de correspondance
 			throw "Invalid user ID";
 		} else {
 			// si correspondance

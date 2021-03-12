@@ -1,14 +1,13 @@
 const Sauce = require("../models/Sauce");
+const fs = require("fs"); //imprt manip image
 
 /*CREATION PRODUIT*/
 exports.createSauce = (req, res, next) => {
-	const sauceObject = JSON.parse(
-		//transformation de la chaîne de caractère en objet
-		req.body.sauce
-	);
+	const sauceObject = JSON.parse(req.body.sauce); //extraction d'un objet JSON du req.body.sauce en transformant la chaîne de caractère en objet
 	delete sauceObject._id;
 	const sauce = new Sauce({
-		...sauceObject //spread ... = copie des tous les elements de req.body
+		...sauceObject,
+		imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 	});
 	sauce.likes = 0;
 	sauce.dislikes = 0;
@@ -68,11 +67,11 @@ exports.likeSauce = (req, res, next) => {
 exports.modifySauce = (req, res, next) => {
 	const sauceObject = req.file /*si nouvelle image*/
 		? {
-				...JSON.parse(
-					req.body.sauce
-				) /*si il existe on récupère la chaine de caractère puis on la parse en object*/
-		  }
+				...JSON.parse(req.body.sauce),
+				imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` //modifier l'image url
+		  } //si il existe on récupère la chaine de caractère puis on la parse en object
 		: { ...req.body };
+	// vérifier que l'utilisateur qui initie la requête est bien le créateur de la sauce et donc dispose des droits pour la supprimer
 	Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) //mise a jour dans la base de données
 		.then(() => res.status(200).json({ message: "Sauce modifié !" }))
 		.catch(error => res.status(400).json({ error }));
@@ -80,19 +79,28 @@ exports.modifySauce = (req, res, next) => {
 
 /*SUPPRESSION PRODUIT*/
 exports.deleteSauce = (req, res, next) => {
-	Sauce.findOne({ _id: req.params.id }) //trouver l'objet grâce a son id
-		.then(sauce => {})
+	Sauce.findOne({ _id: req.params.id }) //trouver l'objet dans la base de données
+		.then(sauce => {
+			const filename = sauce.imageUrl.split("/images/")[1]; //récuperer le nom du fichier à supprimer
+			fs.unlink(`images/${filename}`, () => {
+				Sauce.deleteOne({ _id: req.params.id }) // action suppression l'objet dans la base de données*/
+					.then(() => res.status(200).json({ message: "Sauce supprimé !" }))
+					.catch(error => res.status(400).json({ error }));
+			});
+		})
 		.catch(error => res.status(500).json({ error }));
 };
 
+/*TROUVER UN PRODUIT*/
 exports.getOneSauce = (req, res, next) => {
 	Sauce.findOne({ _id: req.params.id }) // récupération d'une sauce unique
 		.then(sauce => res.status(200).json(sauce))
 		.catch(error => res.status(404).json({ error }));
 };
 
+/*TROUVER DES PRODUITS*/
 exports.getAllSauces = (req, res, next) => {
-	Sauce.find()
+	Sauce.find() // tab contenant toutes les sauces de la base de données
 		.then(sauces => res.status(200).json(sauces))
 		.catch(error => res.status(400).json({ error }));
 };

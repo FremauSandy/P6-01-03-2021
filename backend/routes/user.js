@@ -11,6 +11,7 @@ const userCtrl = require("../controllers/user");
 // 	);
 // };
 
+/*LOGIQUE DE ROUTE*/
 router.post("/signup", userCtrl.signup);
 // router.post("/login", bouncer.block, userCtrl.login);
 router.post("/login", userCtrl.login);
