@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "email": "nametest@gmail.com", 
-    "password": "test"
+    "password": "Testons1"
 }
 ###
 POST http://localhost:3000/api/auth/login
@@ -11,8 +11,19 @@ Content-Type: application/json
 
 {
     "email": "nametest@gmail.com", 
-    "password": "test"
+    "password": "Testons1"
 }
 ###
 GET http://localhost:3000/api/sauces
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDQ3YTY0MjYxMDE4NzI3NTQ1NzkyNGUiLCJpYXQiOjE2MTUzMDg0MjYsImV4cCI6MTYxNTM5NDgyNn0.nGw97OAtLrPfz0AVs3msFYUDDAIOlqHPR-UCKhd4sBU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDUwYjUyZmVjOGNlNjBmODQxY2ZjYzUiLCJpYXQiOjE2MTU5MDIwMTUsImV4cCI6MTYxNTkwOTIxNX0.jL4yQontFFDiieJfvvKCVPSZSS6rbAiOiu9XMUX2yTc
+###
+GET http://localhost:3000/api/sauces/6050b084ec8ce60f841cfcc4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDUwYjUyZmVjOGNlNjBmODQxY2ZjYzUiLCJpYXQiOjE2MTU5MDIwMTUsImV4cCI6MTYxNTkwOTIxNX0.jL4yQontFFDiieJfvvKCVPSZSS6rbAiOiu9XMUX2yTc
+###
+PUT http://localhost:3000/api/sauces/6050b084ec8ce60f841cfcc4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDUwYjUyZmVjOGNlNjBmODQxY2ZjYzUiLCJpYXQiOjE2MTU5MDIwMTUsImV4cCI6MTYxNTkwOTIxNX0.jL4yQontFFDiieJfvvKCVPSZSS6rbAiOiu9XMUX2yTc
+Content-Type: application/json
+
+{
+    "heat": 5
+}

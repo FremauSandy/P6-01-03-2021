@@ -1,7 +1,9 @@
+/*IMPORT PACKAGES*/
 const bcrypt = require("bcrypt"); //import cryptage pour les mots de passe
 const jwt = require("jsonwebtoken"); //package pour créer et verifier les tokens
 const User = require("../models/user");
 const bouncer = require("express-bouncer")(120000, 1.8e6, 5);
+const cryptoJS = require("crypto-js"); //securité cryptage mail
 
 /*ENREGISTRER*/
 exports.signup = (req, res, next) => {
@@ -10,8 +12,9 @@ exports.signup = (req, res, next) => {
 		.hash(req.body.password, 10) //hash le mdp et on execute 10 fois l'algorithme
 		.then(hash => {
 			// methode asyncrone
+			let emailCrypt = cryptoJS.HmacSHA512(req.body.email, "secret_key").toString();
 			const user = new User({
-				email: req.body.email,
+				email: emailCrypt,
 				password: hash //mot de passe crypté
 			});
 			user.save() //sauvegarde dans la base de donnée
@@ -23,8 +26,9 @@ exports.signup = (req, res, next) => {
 
 /*SE CONNECTER*/
 exports.login = (req, res, next) => {
+	let emailCrypt = cryptoJS.HmacSHA512(req.body.email, "secret_key").toString();
 	User.findOne({
-		email: req.body.email
+		email: emailCrypt
 	}) // cherche un utilisateur deja existant
 		.then(user => {
 			if (!user) {
@@ -36,7 +40,6 @@ exports.login = (req, res, next) => {
 				.then(valid => {
 					// methode async
 					if (!valid) {
-						// si le mdp ne fonctionne pas( booléan)
 						return res.status(401).json({
 							error: "Mot de passe incorrect !"
 						});
@@ -47,7 +50,7 @@ exports.login = (req, res, next) => {
 						token: jwt.sign(
 							//token d'authentification
 							{ userId: user._id },
-							"RANDOM_TOKEN_SECRET",
+							process.env.TOKEN,
 							{ expiresIn: "2h" }
 						)
 					});

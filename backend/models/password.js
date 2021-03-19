@@ -1,6 +1,8 @@
+/*IMPORT PACKAGES*/
 const passwordValidator = require("password-validator");
 const passwordSchema = new passwordValidator();
 
+/*SCHEMA*/
 passwordSchema
 	.is()
 	.min(8) // limite 8 caractères min

@@ -1,5 +1,7 @@
+/*IMPORT PACKAGES*/
 const mongoose = require("mongoose");
 
+/*SCHEMA*/
 const sauceSchema = mongoose.Schema({
 	userId: { type: String, required: true }, //id pour utilisateur
 	name: { type: String, required: true },

@@ -1,5 +1,6 @@
+/*IMPORT PACKAGES*/
 const Sauce = require("../models/Sauce");
-const fs = require("fs"); //imprt manip image
+const fs = require("fs"); //import manip image
 
 /*CREATION PRODUIT*/
 exports.createSauce = (req, res, next) => {
@@ -65,7 +66,7 @@ exports.likeSauce = (req, res, next) => {
 
 /*MODIFIER UN PRODUIT*/
 exports.modifySauce = (req, res, next) => {
-	const sauceObject = req.file /*si nouvelle image*/
+	const sauceObject = req.file //si nouvelle image
 		? {
 				...JSON.parse(req.body.sauce),
 				imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` //modifier l'image url
@@ -81,7 +82,7 @@ exports.modifySauce = (req, res, next) => {
 exports.deleteSauce = (req, res, next) => {
 	Sauce.findOne({ _id: req.params.id }) //trouver l'objet dans la base de données
 		.then(sauce => {
-			const filename = sauce.imageUrl.split("/images/")[1]; //récuperer le nom du fichier à supprimer
+			const filename = sauce.imageUrl.split("/images/")[1]; //récuperer le nom du fichier image à supprimer
 			fs.unlink(`images/${filename}`, () => {
 				Sauce.deleteOne({ _id: req.params.id }) // action suppression l'objet dans la base de données*/
 					.then(() => res.status(200).json({ message: "Sauce supprimé !" }))

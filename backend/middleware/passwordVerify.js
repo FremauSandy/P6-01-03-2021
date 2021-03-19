@@ -1,5 +1,7 @@
+/*IMPORT PACKAGES*/
 const passwordSchema = require("../models/password");
 
+/*CONFIGURATION MDP*/
 module.exports = (req, res, next) => {
 	if (!passwordSchema.validate(req.body.password)) {
 		return res.status(400).json({
